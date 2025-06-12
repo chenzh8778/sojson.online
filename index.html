@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="pageTitle">在线代码工具箱：JSON, CSS, XML, Python, SQL 格式化、压缩、转换与对比 | 免费开发者工具</title>
+    <!-- SEO: Meta Description -->
+    <meta name="description" data-lang-key="metaDescription" content="免费在线代码工具箱，专为开发者设计。一站式解决 JSON、CSS、XML、Python、SQL 代码的格式化、压缩、验证、转义、互转及智能代码对比。快速提升您的编程效率！">
+    <!-- Tailwind CSS CDN for modern and responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to refine Tailwind defaults and add specific programmer-friendly touches */
+        body {
+            font-family: 'Inter', 'Consolas', 'Monaco', 'Lucida Console', monospace; /* Use Inter for general text, fall back to code fonts */
+            background-color: #1a202c; /* Dark background, similar to common IDEs */
+            color: #e2e8f0; /* Light text for contrast */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            padding: 1.25rem; /* 20px */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 75rem; /* 1200px */
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem; /* 20px */
+        }
+
+        h1 {
+            color: #63b3ed; /* A nice blue for headings */
+            text-align: center;
+            margin-bottom: 0.5rem; /* Reduced margin to make space for intro text */
+        }
+
+        .intro-text {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #a0aec0;
+            margin-bottom: 1.5rem;
+            max-width: 60rem; /* Limit width for readability */
+            line-height: 1.5;
+        }
+
+        /* Navigation Bar Styles */
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem; /* 16px */
+            background-color: #2d3748; /* Darker background for nav */
+            padding: 0.75rem 1.25rem; /* 12px 20px */
+            border-radius: 0.5rem; /* Rounded corners */
+            margin-bottom: 1.5rem; /* 24px */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-link {
+            padding: 0.625rem 1rem; /* 10px 16px */
+            color: #a0aec0; /* Lighter gray for inactive links */
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .nav-link:hover {
+                background-color: #4a5568; /* Darker gray on hover */
+                color: #e2e8f0; /* Lighter text on hover */
+            }
+
+            .nav-link.active {
+                background-color: #63b3ed; /* Active link background */
+                color: #1a202c; /* Dark text for active link */
+                box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* Inner shadow for active state */
+            }
+
+        /* Editor Section Styles */
+        .editor-section {
+            display: flex;
+            gap: 1.25rem; /* 20px */
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+        }
+
+        .editor-panel {
+            flex: 1;
+            min-width: 45%; /* Ensure panels take adequate space, especially for responsiveness */
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.3125rem; /* 5px */
+            color: #a78bfa; /* Purple for labels */
+            font-weight: 600; /* Semi-bold */
+        }
+
+        textarea {
+            width: 100%;
+            height: 25rem; /* 400px */
+            padding: 0.9375rem; /* 15px */
+            border: 1px solid #4a5568; /* Darker border */
+            background-color: #2d3748; /* Text area background */
+            color: #f7fafc; /* Text input color */
+            font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace; /* Code font for textareas */
+            font-size: 0.875rem; /* 14px */
+            resize: vertical; /* Allow vertical resizing */
+            outline: none; /* Remove default focus outline */
+            border-radius: 0.375rem; /* Rounded corners */
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+        }
+
+            textarea:focus {
+                border-color: #63b3ed; /* Blue border on focus */
+            }
+
+        /* Controls Section Styles */
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow buttons to wrap */
+            gap: 0.9375rem; /* 15px */
+            margin-top: 1.25rem; /* 20px */
+        }
+
+        button {
+            padding: 0.75rem 1.5rem; /* 12px 24px */
+            font-size: 1rem; /* 16px */
+            font-weight: 500; /* Medium weight */
+            border: none;
+            border-radius: 0.375rem; /* Rounded corners for buttons */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth transitions */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+            button:hover {
+                transform: translateY(-2px); /* Slight lift on hover */
+            }
+
+            button.primary {
+                background-color: #63b3ed; /* Blue primary button */
+                color: #1a202c; /* Dark text on primary button */
+            }
+
+                button.primary:hover {
+                    background-color: #4299e1; /* Darker blue on hover */
+                }
+
+            button.secondary {
+                background-color: #f6ad55; /* Orange secondary button */
+                color: #1a202c; /* Dark text on secondary button */
+            }
+
+                button.secondary:hover {
+                    background-color: #ed8936; /* Darker orange on hover */
+                }
+
+        /* Options Section Styles */
+        .options {
+            margin-top: 0.9375rem; /* 15px */
+            display: flex;
+            align-items: center;
+            gap: 0.625rem; /* 10px */
+            justify-content: center;
+        }
+
+            .options input[type="number"] {
+                width: 3.75rem; /* 60px */
+                padding: 0.5rem; /* 8px */
+                border: 1px solid #4a5568;
+                background-color: #2d3748;
+                color: #e2e8f0;
+                border-radius: 0.1875rem; /* 3px */
+                outline: none;
+                text-align: center;
+            }
+
+                .options input[type="number"]:focus {
+                    border-color: #63b3ed;
+                }
+
+        /* Message Box Styles */
+        .message {
+            margin-top: 1.25rem; /* 20px */
+            padding: 0.625rem 1.25rem; /* 10px 20px */
+            border-radius: 0.375rem; /* Rounded corners */
+            text-align: center;
+            font-weight: 500;
+        }
+
+            .message.success {
+                background-color: rgba(72, 187, 120, 0.2); /* Green with transparency */
+                color: #48bb78; /* Green text */
+                border: 1px solid #48bb78;
+            }
+
+            .message.error {
+                background-color: rgba(237, 100, 166, 0.2); /* Red with transparency */
+                color: #ed64a6; /* Red text */
+                border: 1px solid #ed64a6;
+            }
+
+        /* Tool sections - default hidden */
+        .tool-section {
+            display: none; /* Hide all tool sections by default */
+            flex-direction: column; /* Ensure content stacks */
+        }
+
+            /* Active tool section */
+            .tool-section.active {
+                display: flex; /* Show active tool section */
+            }
+
+        /* Language Selector Styles */
+        .language-selector {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+            width: 100%;
+            max-width: 75rem;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .language-selector label {
+                margin-bottom: 0; /* Override default label margin */
+                color: #e2e8f0;
+            }
+
+            .language-selector select {
+                background-color: #2d3748;
+                border: 1px solid #4a5568;
+                color: #e2e8f0;
+                padding: 0.5rem 0.75rem;
+                border-radius: 0.375rem;
+                outline: none;
+                cursor: pointer;
+                transition: border-color 0.3s ease;
+            }
+
+                .language-selector select:focus {
+                    border-color: #63b3ed;
+                }
+
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .editor-section {
+                flex-direction: column;
+            }
+
+            .editor-panel {
+                min-width: 95%; /* Take up almost full width */
+            }
+
+            .controls {
+                flex-direction: column; /* Stack buttons vertically */
+            }
+
+            button {
+                width: 100%; /* Full width buttons */
+            }
+
+            .nav-bar {
+                flex-wrap: wrap; /* Allow nav links to wrap */
+            }
+
+            .language-selector {
+                justify-content: center; /* Center language selector on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Selector outside container for top-right positioning -->
+    <div class="language-selector">
+        <label for="languageSelect" data-lang-key="selectLanguage">语言:</label>
+        <select id="languageSelect">
+            <option value="zh" selected>简体中文</option>
+            <option value="en">English</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <h1 class="text-3xl font-bold" data-lang-key="mainTitle">在线工具集合</h1>
+        <!-- SEO: Introductory paragraph with keywords -->
+        <p class="intro-text" data-lang-key="introParagraph">欢迎使用我们的免费在线代码工具箱，这是一个为开发者精心打造的一站式平台。我们提供强大的 JSON 格式化、CSS 压缩、XML 验证、Python 代码格式化、SQL 美化和代码对比等实用功能，助您轻松提升编程效率和代码质量。</p>
+
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <a href="#" class="nav-link active" data-tool="json" data-lang-key="jsonTool">JSON 工具</a>
+            <a href="#" class="nav-link" data-tool="css" data-lang-key="cssTool">CSS 工具</a>
+            <a href="#" class="nav-link" data-tool="xml" data-lang-key="xmlTool">XML 工具</a>
+            <a href="#" class="nav-link" data-tool="python" data-lang-key="pythonTool">Python 工具</a>
+            <a href="#" class="nav-link" data-tool="sql" data-lang-key="sqlTool">SQL 工具</a>
+            <a href="#" class="nav-link" data-tool="diff" data-lang-key="diffTool">代码对比</a>
+        </nav>
+
+        <!-- JSON Tool Section -->
+        <div id="json-tool-section" class="tool-section active">
+            <h2 class="text-2xl font-bold text-center text-blue-400 mb-6" data-lang-key="jsonSectionTitle">JSON 解析及格式化</h2>
+            <div class="editor-section">
+                <div class="editor-panel">
+                    <label for="jsonInput" data-lang-key="inputLabel">输入 JSON:</label>
+                    <textarea id="jsonInput" data-lang-key="jsonInputPlaceholder" placeholder="在此输入 JSON 字符串..."></textarea>
+                </div>
+                <div class="editor-panel">
+                    <label for="jsonOutput" data-lang-key="outputLabel">输出结果:</label>
+                    <textarea id="jsonOutput" readonly></textarea>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="primary" id="jsonFormatBtn" data-lang-key="formatBtn">格式化</button>
+                <button class="secondary" id="jsonCompressBtn" data-lang-key="compressBtn">压缩</button>
+                <button class="primary" id="jsonValidateBtn" data-lang-key="validateBtn">验证</button>
+                <button class="secondary" id="jsonClearBtn" data-lang-key="clearBtn">清空</button>
+                <button class="primary" id="jsonReloadDemoBtn" data-lang-key="reloadDemoBtn">重新加载示例</button>
+                <button class="primary" id="jsonToXmlBtn" data-lang-key="jsonToXmlBtn">JSON 转 XML</button>
+                <button class="secondary" id="jsonEscapeBtn" data-lang-key="jsonEscapeBtn">JSON 转义</button>
+                <button class="primary" id="jsonUnescapeBtn" data-lang-key="jsonUnescapeBtn">JSON 反转义</button>
+            </div>
+            <div class="options">
+                <label for="jsonIndentSpaces" data-lang-key="indentSpacesLabel">缩进空格数:</label>
+                <input type="number" id="jsonIndentSpaces" value="2" min="0" max="10">
+            </div>
+        </div>
+
+        <!-- CSS Tool Section -->
+        <div id="css-tool-section" class="tool-section">
+            <h2 class="text-2xl font-bold text-center text-blue-400 mb-6" data-lang-key="cssSectionTitle">CSS 压缩及格式化</h2>
+            <div class="editor-section">
+                <div class="editor-panel">
+                    <label for="cssInput" data-lang-key="inputLabel">输入 CSS:</label>
+                    <textarea id="cssInput" data-lang-key="cssInputPlaceholder" placeholder="在此输入 CSS 代码..."></textarea>
+                </div>
+                <div class="editor-panel">
+                    <label for="cssOutput" data-lang-key="outputLabel">输出结果:</label>
+                    <textarea id="cssOutput" readonly></textarea>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="primary" id="cssFormatBtn" data-lang-key="formatBtn">格式化</button>
+                <button class="secondary" id="cssCompressBtn" data-lang-key="compressBtn">压缩</button>
+                <button class="secondary" id="cssClearBtn" data-lang-key="clearBtn">清空</button>
+                <button class="primary" id="cssReloadDemoBtn" data-lang-key="reloadDemoBtn">重新加载示例</button>
+            </div>
+            <div class="options">
+                <label for="cssIndentSpaces" data-lang-key="indentSpacesLabel">缩进空格数:</label>
+                <input type="number" id="cssIndentSpaces" value="2" min="0" max="10">
+            </div>
+        </div>
+
+        <!-- XML Tool Section -->
+        <div id="xml-tool-section" class="tool-section">
+            <h2 class="text-2xl font-bold text-center text-blue-400 mb-6" data-lang-key="xmlSectionTitle">XML 压缩及格式化</h2>
+            <div class="editor-section">
+                <div class="editor-panel">
+                    <label for="xmlInput" data-lang-key="inputLabel">输入 XML:</label>
+                    <textarea id="xmlInput" data-lang-key="xmlInputPlaceholder" placeholder="在此输入 XML 代码..."></textarea>
+                </div>
+                <div class="editor-panel">
+                    <label for="xmlOutput" data-lang-key="outputLabel">输出结果:</label>
+                    <textarea id="xmlOutput" readonly></textarea>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="primary" id="xmlFormatBtn" data-lang-key="formatBtn">格式化</button>
+                <button class="secondary" id="xmlCompressBtn" data-lang-key="compressBtn">压缩</button>
+                <button class="secondary" id="xmlClearBtn" data-lang-key="clearBtn">清空</button>
+                <button class="primary" id="xmlReloadDemoBtn" data-lang-key="reloadDemoBtn">重新加载示例</button>
+                <button class="primary" id="xmlToJsonBtn" data-lang-key="xmlToJsonBtn">XML 转 JSON</button>
+            </div>
+            <div class="options">
+                <label for="xmlIndentSpaces" data-lang-key="indentSpacesLabel">缩进空格数:</label>
+                <input type="number" id="xmlIndentSpaces" value="2" min="0" max="10">
+            </div>
+        </div>
+
+        <!-- Python Tool Section -->
+        <div id="python-tool-section" class="tool-section">
+            <h2 class="text-2xl font-bold text-center text-blue-400 mb-6" data-lang-key="pythonSectionTitle">Python 代码格式化</h2>
+            <div class="editor-section">
+                <div class="editor-panel">
+                    <label for="pythonInput" data-lang-key="inputLabel">输入 Python 代码:</label>
+                    <textarea id="pythonInput" data-lang-key="pythonInputPlaceholder" placeholder="在此输入 Python 代码..."></textarea>
+                </div>
+                <div class="editor-panel">
+                    <label for="pythonOutput" data-lang-key="outputLabel">输出结果:</label>
+                    <textarea id="pythonOutput" readonly></textarea>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="primary" id="pythonFormatBtn" data-lang-key="formatBtn">格式化</button>
+                <button class="secondary" id="pythonClearBtn" data-lang-key="clearBtn">清空</button>
+                <button class="primary" id="pythonReloadDemoBtn" data-lang-key="reloadDemoBtn">重新加载示例</button>
+            </div>
+            <div class="options">
+                <label for="pythonIndentSpaces" data-lang-key="indentSpacesLabel">缩进空格数:</label>
+                <input type="number" id="pythonIndentSpaces" value="4" min="0" max="10">
+            </div>
+        </div>
+
+        <!-- SQL Tool Section -->
+        <div id="sql-tool-section" class="tool-section">
+            <h2 class="text-2xl font-bold text-center text-blue-400 mb-6" data-lang-key="sqlSectionTitle">SQL 压缩及格式化</h2>
+            <div class="editor-section">
+                <div class="editor-panel">
+                    <label for="sqlInput" data-lang-key="inputLabel">输入 SQL:</label>
+                    <textarea id="sqlInput" data-lang-key="sqlInputPlaceholder" placeholder="在此输入 SQL 代码..."></textarea>
+                </div>
+                <div class="editor-panel">
+                    <label for="sqlOutput" data-lang-key="outputLabel">输出结果:</label>
+                    <textarea id="sqlOutput" readonly></textarea>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="primary" id="sqlFormatBtn" data-lang-key="formatBtn">格式化</button>
+                <button class="secondary" id="sqlCompressBtn" data-lang-key="compressBtn">压缩</button>
+                <button class="secondary" id="sqlClearBtn" data-lang-key="clearBtn">清空</button>
+                <button class="primary" id="sqlReloadDemoBtn" data-lang-key="reloadDemoBtn">重新加载示例</button>
+            </div>
+            <div class="options">
+                <label for="sqlIndentSpaces" data-lang-key="indentSpacesLabel">缩进空格数:</label>
+                <input type="number" id="sqlIndentSpaces" value="4" min="0" max="10">
+            </div>
+        </div>
+
+        <!-- Code Compare Tool Section -->
+        <div id="diff-tool-section" class="tool-section">
+            <h2 class="text-2xl font-bold text-center text-blue-400 mb-6" data-lang-key="diffSectionTitle">在线代码对比</h2>
+            <div class="editor-section">
+                <div class="editor-panel">
+                    <label for="diffInput1" data-lang-key="diffInputLabel1">输入代码 1:</label>
+                    <textarea id="diffInput1" data-lang-key="diffInputPlaceholder1" placeholder="在此输入第一段代码..."></textarea>
+                </div>
+                <div class="editor-panel">
+                    <label for="diffInput2" data-lang-key="diffInputLabel2">输入代码 2:</label>
+                    <textarea id="diffInput2" data-lang-key="diffInputPlaceholder2" placeholder="在此输入第二段代码..."></textarea>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="primary" id="diffCompareBtn" data-lang-key="compareBtn">对比代码</button>
+                <button class="secondary" id="diffClearBtn" data-lang-key="clearBtn">清空</button>
+                <button class="primary" id="diffReloadDemoBtn" data-lang-key="reloadDemoBtn">重新加载示例</button>
+            </div>
+            <div class="editor-panel mt-4 w-full">
+                <label for="diffOutput" data-lang-key="outputLabel">对比结果:</label>
+                <textarea id="diffOutput" readonly class="!h-80"></textarea>
+            </div>
+        </div>
+
+        <!-- Global Message Box -->
+        <div id="messageBox" class="message"></div>
+    </div>
+
+    <script>
+        // --- Global Elements & Utility Functions ---
+        const messageBox = document.getElementById('messageBox');
+        const languageSelect = document.getElementById('languageSelect');
+
+        // Translations object
+        const translations = {
+            zh: {
+                pageTitle: '在线代码工具箱：JSON, CSS, XML, Python, SQL 格式化、压缩、转换与对比 | 免费开发者工具',
+                mainTitle: '在线代码工具箱',
+                metaDescription: '免费在线代码工具箱，专为开发者设计。一站式解决 JSON、CSS、XML、Python、SQL 代码的格式化、压缩、验证、转义、互转及智能代码对比。快速提升您的编程效率！',
+                introParagraph: '欢迎使用我们的免费在线代码工具箱，这是一个为开发者精心打造的一站式平台。我们提供强大的 JSON 格式化、CSS 压缩、XML 验证、Python 代码格式化、SQL 美化和代码对比等实用功能，助您轻松提升编程效率和代码质量。',
+                selectLanguage: '语言:',
+                jsonTool: 'JSON 工具',
+                cssTool: 'CSS 工具',
+                xmlTool: 'XML 工具',
+                pythonTool: 'Python 工具',
+                sqlTool: 'SQL 工具',
+                diffTool: '代码对比',
+                jsonSectionTitle: 'JSON 解析及格式化',
+                cssSectionTitle: 'CSS 压缩及格式化',
+                xmlSectionTitle: 'XML 压缩及格式化',
+                pythonSectionTitle: 'Python 代码格式化',
+                sqlSectionTitle: 'SQL 压缩及格式化',
+                diffSectionTitle: '在线代码对比',
+                inputLabel: '输入:',
+                outputLabel: '输出结果:',
+                formatBtn: '格式化',
+                compressBtn: '压缩',
+                validateBtn: '验证',
+                clearBtn: '清空',
+                reloadDemoBtn: '重新加载示例',
+                compareBtn: '对比代码',
+                indentSpacesLabel: '缩进空格数:',
+                jsonInputPlaceholder: '在此输入 JSON 字符串...',
+                cssInputPlaceholder: '在此输入 CSS 代码...',
+                xmlInputPlaceholder: '在此输入 XML 代码...',
+                pythonInputPlaceholder: '在此输入 Python 代码...',
+                sqlInputPlaceholder: '在此输入 SQL 代码...',
+                diffInputLabel1: '输入代码 1:',
+                diffInputLabel2: '输入代码 2:',
+                diffInputPlaceholder1: '在此输入第一段代码...',
+                diffInputPlaceholder2: '在此输入第二段代码...',
+                jsonInputRequired: '请输入 JSON 字符串！',
+                jsonFormatSuccess: 'JSON 格式化成功！',
+                jsonParseError: 'JSON 解析错误:',
+                jsonCompressSuccess: 'JSON 压缩成功！',
+                jsonValid: 'JSON 格式正确！',
+                jsonInvalid: 'JSON 格式错误:',
+                cssInputRequired: '请输入 CSS 代码！',
+                cssFormatSuccess: 'CSS 格式化成功！',
+                cssFormatError: 'CSS 格式化错误:',
+                cssCompressSuccess: 'CSS 压缩成功！',
+                cssCompressError: 'CSS 压缩错误:',
+                xmlInputRequired: '请输入 XML 代码！',
+                xmlFormatSuccess: 'XML 格式化成功！',
+                xmlParseOrFormatError: 'XML 解析或格式化错误:',
+                xmlCompressSuccess: 'XML 压缩成功！',
+                xmlParseOrCompressError: 'XML 解析或压缩错误:',
+                pythonInputRequired: '请输入 Python 代码！',
+                pythonFormatSuccess: 'Python 代码格式化成功！',
+                pythonFormatError: 'Python 代码格式化失败:',
+                sqlInputRequired: '请输入 SQL 代码！',
+                sqlFormatSuccess: 'SQL 格式化成功！',
+                sqlFormatError: 'SQL 格式化失败:',
+                sqlCompressSuccess: 'SQL 压缩成功！',
+                sqlCompressError: 'SQL 压缩失败！',
+                diffInputRequired: '请输入两段代码进行对比！',
+                diffCompareSuccess: '代码对比完成！',
+                diffCompareError: '代码对比失败:',
+                xmlToJsonBtn: 'XML 转 JSON',
+                jsonToXmlBtn: 'JSON 转 XML',
+                xmlToJsonSuccess: 'XML 成功转换为 JSON！',
+                xmlToJsonError: 'XML 转 JSON 失败:',
+                jsonToXmlSuccess: 'JSON 成功转换为 XML！',
+                jsonToXmlError: 'JSON 转 XML 失败:',
+                jsonEscapeBtn: 'JSON 转义',
+                jsonUnescapeBtn: 'JSON 反转义',
+                jsonEscapeSuccess: 'JSON 字符串转义成功！',
+                jsonEscapeError: 'JSON 字符串转义失败:',
+                jsonUnescapeSuccess: 'JSON 字符串反转义成功！',
+                jsonUnescapeError: 'JSON 字符串反转义失败:',
+                demoReloadSuccess: '示例内容已重新加载！',
+                jsonInputExample: `
+{
+      "name": "示例数据",
+      "version": "1.0.0",
+      "features": [
+        {
+          "id": 1,
+          "name": "JSON 格式化"
+        },
+        {
+          "id": 2,
+          "name": "JSON 压缩"
+        },
+        {
+          "id": 3,
+          "name": "JSON 验证"
+        }
+      ],
+      "isActive": true,
+      "config": {
+        "indent": 2,
+        "theme": "dark"
+      },
+      "nested_array": [
+        ["a", "b"],
+        [1, 2, 3]
+      ],
+      "example_for_xml_conversion": {
+        "_attributes": {
+          "id": "book101",
+          "category": "fiction"
+        },
+        "title": "The Great Novel",
+        "author": "Jane Doe",
+        "year": 2023,
+        "price": 19.99,
+        "chapters": [
+          "Chapter One",
+          "Chapter Two"
+        ],
+        "description": {
+          "#text": "这是一本关于冒险和友谊的书。"
+        }
+      },
+      "raw_string_for_escape": "Hello, \\"World\\"!\\nThis is a new line."
+}
+                    `.trim(),
+                cssInputExample: `
+/* 这是一个示例CSS文件 */
+body {
+        font-family: Arial, sans-serif; /* 字体设置 */
+        margin: 0;
+        padding: 20px; /* 内边距 */
+        background-color: #f0f0f0;
+}
+
+.container {
+        width: 80%; /* 宽度 */
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h1 {
+        color: #333;
+        text-align: center;
+}
+                    `.trim(),
+                xmlInputExample: `
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 这是一个示例XML文件 -->
+<bookstore>
+        <book category="cooking">
+            <title lang="en">Everyday Italian</title>
+            <author>Giada De Laurentiis</author>
+            <year>2005</year>
+            <price>30.00</price>
+        </book>
+        <book category="children">
+            <title lang="en">Harry Potter</title>
+            <author>J.K. Rowling</author>
+            <year>2005</year>
+            <price>29.99</price>
+        </book>
+        <book category="web">
+            <title lang="en">XQuery Kick Start</title>
+            <author>James McGovern</author>
+            <author>Per Bothner</author>
+            <author>Kurt Cagle</author>
+            <author>James Linn</author>
+            <author>Vaidyanathan Nagarajan</author>
+            <year>2006</year>
+            <price>49.99</price>
+        </book>
+        <example_for_json_conversion id="item1" type="fiction">
+            <title>Great Adventures</title>
+            <author>John Doe</author>
+            <chapters>
+                <chapter>Introduction</chapter>
+                <chapter>The Journey Begins</chapter>
+            </chapters>
+            <description>这是一本关于探索和发现的激动人心的故事。</description>
+        </example_for_json_conversion>
+</bookstore>
+                    `.trim(),
+                pythonInputExample: `
+# 这是一个示例 Python 函数
+def factorial(n):
+        """
+        计算一个数的阶乘。
+        """
+        if n == 0:
+            return 1
+        else:
+            return n * factorial(n-1)
+
+class MyClass:
+        def __init__(self, name):
+            self.name = name
+
+        def greet(self):
+            print(f"Hello, {self.name}!")
+
+# 调用函数和方法
+num = 5
+result = factorial(num)
+print(f"The factorial of {num} is {result}")
+
+obj = MyClass("Pythoner")
+obj.greet()
+
+for i in range(3):
+        if i == 1:
+            continue
+        print(f"Loop iteration: {i}")
+                        `.trim(),
+                sqlInputExample: `
+-- 这是一个示例 SQL 查询
+SELECT
+        Employees.EmployeeID,
+        Employees.FirstName,
+        Employees.LastName,
+        Orders.OrderID,
+        Orders.OrderDate,
+        SUM(OrderDetails.Quantity * Products.Price) AS TotalAmount
+FROM
+        Employees
+INNER JOIN
+        Orders ON Employees.EmployeeID = Orders.EmployeeID
+LEFT JOIN
+        OrderDetails ON Orders.OrderID = OrderDetails.OrderID /* 注释掉的 JOIN */
+JOIN Products ON OrderDetails.ProductID = Products.ProductID
+WHERE
+        Employees.HireDate >= '2020-01-01'
+        AND Orders.OrderDate < CURDATE()
+GROUP BY
+        Employees.EmployeeID, Orders.OrderID
+HAVING
+        TotalAmount > 1000
+ORDER BY
+        TotalAmount DESC, Orders.OrderDate ASC;
+                        `.trim(),
+                diffInputExample1: `
+def greet(name):
+        # This is a greeting function
+        print("Hello, " + name + "!")
+        print("Welcome to the example.")
+
+def add(a, b):
+        return a + b
+
+class MyClass:
+        def __init__(self, value):
+            self.value = value
+
+        def get_value(self):
+            return self.value
+                    `.trim(),
+                diffInputExample2: `
+def greet(name):
+        # This is an updated greeting function
+        print(f"Hello, {name}!") # Using f-string
+        print("Glad to have you here.") # Modified line
+
+def subtract(a, b): # New function
+        return a - b
+
+class MyClass:
+        def __init__(self, value):
+            self.data = value # Changed variable name
+
+        def get_value(self):
+            return self.data # Return updated variable
+                        `.trim()
+            },
+            en: {
+                pageTitle: 'Online Code Tools - JSON, CSS, XML, Python, SQL Formatter, Minifier & Diff | Free Developer Utilities',
+                mainTitle: 'Online Code Tools',
+                metaDescription: 'Free online code toolbox, designed for developers. A one-stop solution for JSON, CSS, XML, Python, SQL code formatting, minifying, validation, escaping, conversion, and intelligent code comparison. Boost your programming efficiency quickly!',
+                introParagraph: 'Welcome to our free online code toolbox, a one-stop platform meticulously crafted for developers. We offer powerful features like JSON formatting, CSS minification, XML validation, Python code formatting, SQL beautification, and intelligent code comparison to effortlessly boost your coding efficiency and code quality.',
+                selectLanguage: 'Language:',
+                jsonTool: 'JSON Tool',
+                cssTool: 'CSS Tool',
+                xmlTool: 'XML Tool',
+                pythonTool: 'Python Tool',
+                sqlTool: 'SQL Tool',
+                diffTool: 'Code Compare',
+                jsonSectionTitle: 'JSON Parse & Format',
+                cssSectionTitle: 'CSS Minify & Format',
+                xmlSectionTitle: 'XML Minify & Format',
+                pythonSectionTitle: 'Python Code Formatter',
+                sqlSectionTitle: 'SQL Minify & Format',
+                diffSectionTitle: 'Online Code Comparison',
+                inputLabel: 'Input:',
+                outputLabel: 'Output:',
+                formatBtn: 'Format',
+                compressBtn: 'Minify',
+                validateBtn: 'Validate',
+                clearBtn: 'Clear',
+                reloadDemoBtn: 'Reload Demo',
+                compareBtn: 'Compare Code',
+                indentSpacesLabel: 'Indent Spaces:',
+                jsonInputPlaceholder: 'Enter JSON string here...',
+                cssInputPlaceholder: 'Enter CSS code here...',
+                xmlInputPlaceholder: 'Enter XML code here...',
+                pythonInputPlaceholder: 'Enter Python code here...',
+                sqlInputPlaceholder: 'Enter SQL code here...',
+                diffInputLabel1: 'Input Code 1:',
+                diffInputLabel2: 'Input Code 2:',
+                diffInputPlaceholder1: 'Enter the first code snippet here...',
+                diffInputPlaceholder2: 'Enter the second code snippet here...',
+                jsonInputRequired: 'Please enter a JSON string!',
+                jsonFormatSuccess: 'JSON formatted successfully!',
+                jsonParseError: 'JSON parse error:',
+                jsonCompressSuccess: 'JSON minified successfully!',
+                jsonValid: 'JSON format is correct!',
+                jsonInvalid: 'JSON format error:',
+                cssInputRequired: 'Please enter CSS code!',
+                cssFormatSuccess: 'CSS formatted successfully!',
+                cssFormatError: 'CSS format error:',
+                cssCompressSuccess: 'CSS minified successfully!',
+                cssCompressError: 'CSS minify error:',
+                xmlInputRequired: 'Please enter XML code!',
+                xmlFormatSuccess: 'XML formatted successfully!',
+                xmlParseOrFormatError: 'XML parse or format error:',
+                xmlCompressSuccess: 'XML minified successfully!',
+                xmlParseOrCompressError: 'XML parse or minify error:',
+                pythonInputRequired: 'Please enter Python code!',
+                pythonFormatSuccess: 'Python code formatted successfully!',
+                pythonFormatError: 'Python code formatting failed:',
+                sqlInputRequired: 'Please enter SQL code!',
+                sqlFormatSuccess: 'SQL formatted successfully!',
+                sqlFormatError: 'SQL formatting failed:',
+                sqlCompressSuccess: 'SQL minified successfully!',
+                sqlCompressError: 'SQL minify failed:',
+                diffInputRequired: 'Please enter both code snippets to compare!',
+                diffCompareSuccess: 'Code comparison complete!',
+                diffCompareError: 'Code comparison failed:',
+                xmlToJsonBtn: 'XML to JSON',
+                jsonToXmlBtn: 'JSON to XML',
+                xmlToJsonSuccess: 'XML successfully converted to JSON!',
+                xmlToJsonError: 'XML to JSON conversion failed:',
+                jsonToXmlSuccess: 'JSON successfully converted to XML!',
+                jsonToXmlError: 'JSON to XML conversion failed:',
+                jsonEscapeBtn: 'JSON Escape',
+                jsonUnescapeBtn: 'JSON Unescape',
+                jsonEscapeSuccess: 'JSON string escaped successfully!',
+                jsonEscapeError: 'JSON string escape failed:',
+                jsonUnescapeSuccess: 'JSON string unescaped successfully!',
+                jsonUnescapeError: 'JSON string unescape failed:',
+                demoReloadSuccess: 'Demo content reloaded!',
+                jsonInputExample: `
+{
+      "name": "Example Data",
+      "version": "1.0.0",
+      "features": [
+        {
+          "id": 1,
+          "name": "JSON Format"
+        },
+        {
+          "id": 2,
+          "name": "JSON Minify"
+        },
+        {
+          "id": 3,
+          "name": "JSON Validate"
+        }
+      ],
+      "isActive": true,
+      "config": {
+        "indent": 2,
+        "theme": "dark"
+      },
+      "nested_array": [
+        ["alpha", "beta"],
+        [10, 20, 30]
+      ],
+      "example_for_xml_conversion": {
+        "_attributes": {
+          "id": "book101",
+          "category": "fiction"
+        },
+        "title": "The Great Novel",
+        "author": "Jane Doe",
+        "year": 2023,
+        "price": 19.99,
+        "chapters": [
+          "Chapter One",
+          "Chapter Two"
+        ],
+        "description": {
+          "#text": "This is an exciting story about adventure and friendship."
+        }
+      },
+      "raw_string_for_escape": "Hello, \\"World\\"\\nThis is a new line with \\"quotes\\". It also has a backslash: \\\\."
+}
+                    `.trim(),
+                cssInputExample: `
+/* This is an example CSS file */
+body {
+        font-family: 'Open Sans', sans-serif; /* Font setting */
+        margin: 0;
+        padding: 25px; /* Inner padding */
+        background-color: #e6e6fa; /* Light purple background */
+}
+
+.header {
+        font-size: 2em;
+        color: #4a4a4a;
+        text-align: left;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 10px;
+}
+
+.card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 20px;
+        transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+        transform: translateY(-5px);
+}
+                    `.trim(),
+                xmlInputExample: `
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is an example XML file -->
+<catalog>
+        <book id="bk101">
+            <author>Gambardella, Matthew</author>
+            <title>XML Developer's Guide</title>
+            <genre>Computer</genre>
+            <price>44.95</price>
+            <publish_date>2000-10-01</publish_date>
+            <description>An in-depth look at creating applications with XML.</description>
+        </book>
+        <book id="bk102">
+            <author>Ralls, Kim</author>
+            <title>Midnight Rain</title>
+            <genre>Fantasy</genre>
+            <price>5.95</price>
+            <publish_date>2000-12-16</publish_date>
+            <description>A young man's search for meaning in his life after a tragic accident.</description>
+        </book>
+        <example_for_json_conversion id="item1" type="fiction">
+            <title>Great Adventures</title>
+            <author>John Doe</author>
+            <chapters>
+                <chapter>Introduction</chapter>
+                <chapter>The Journey Begins</chapter>
+            </chapters>
+            <description>An exciting story of exploration and discovery.</description>
+        </example_for_json_conversion>
+</catalog>
+                    `.trim(),
+                pythonInputExample: `
+# This is an example Python function
+def factorial(n):
+        """
+        Calculates the factorial of a number.
+        """
+        if n == 0:
+            return 1
+        else:
+            return n * factorial(n-1)
+
+class MyClass:
+        def __init__(self, name):
+            self.name = name
+
+        def greet(self):
+            print(f"Hello, {self.name}!")
+
+# Call function and method
+num = 5
+result = factorial(num)
+print(f"The factorial of {num} is {result}")
+
+obj = MyClass("Pythoner")
+obj.greet()
+
+for i in range(3):
+        if i == 1:
+            continue
+        print(f"Loop iteration: {i}")
+                        `.trim(),
+                sqlInputExample: `
+-- This is an example SQL query
+SELECT
+        e.EmployeeID,
+        e.FirstName,
+        e.LastName,
+        o.OrderID,
+        o.OrderDate,
+        SUM(od.Quantity * p.Price) AS TotalAmount
+FROM
+        Employees e
+INNER JOIN
+        Orders o ON e.EmployeeID = o.EmployeeID
+LEFT JOIN
+        OrderDetails od ON o.OrderID = od.OrderID /* A commented-out JOIN */
+JOIN Products p ON od.ProductID = p.ProductID
+WHERE
+        e.HireDate >= '2020-01-01'
+        AND o.OrderDate < CURDATE()
+GROUP BY
+        e.EmployeeID, o.OrderID
+HAVING
+        TotalAmount > 1000
+ORDER BY
+        TotalAmount DESC, o.OrderDate ASC;
+                        `.trim(),
+                diffInputExample1: `
+def greet(name):
+        # This is a greeting function
+        print("Hello, " + name + "!")
+        print("Welcome to the example.")
+
+def add(a, b):
+        return a + b
+
+class MyClass:
+        def __init__(self, value):
+            self.value = value
+
+        def get_value(self):
+            return self.value
+                    `.trim(),
+                diffInputExample2: `
+def greet(name):
+        # This is an updated greeting function
+        print(f"Hello, {name}!") # Using f-string
+        print("Glad to have you here.") # Modified line
+
+def subtract(a, b): # New function
+        return a - b
+
+class MyClass:
+        def __init__(self, value):
+            self.data = value # Changed variable name
+
+        def get_value(self):
+            return self.data # Return updated variable
+                        `.trim()
+            }
+        };
+
+        /**
+         * @function updateLanguage
+         * @description Updates all text content on the page based on the selected language.
+         * @param {string} lang - The language code (e.g., 'zh', 'en').
+         */
+        function updateLanguage(lang) {
+            const currentTranslations = translations[lang];
+
+            // Update elements with data-lang-key attribute
+            document.querySelectorAll('[data-lang-key]').forEach(element => {
+                const key = element.dataset.langKey;
+                if (currentTranslations[key]) {
+                    // Handle specific cases like placeholder vs textContent
+                    if (element.tagName === 'TEXTAREA' && element.hasAttribute('placeholder')) {
+                        element.placeholder = currentTranslations[key];
+                    } else if (element.tagName === 'META' && element.name === 'description') {
+                        // Update meta description content
+                        element.setAttribute('content', currentTranslations[key]);
+                    }
+                    else {
+                        element.textContent = currentTranslations[key];
+                    }
+                }
+            });
+            // Update document title separately as it's not inside container
+            document.title = currentTranslations.pageTitle;
+
+            // Set HTML lang attribute for SEO
+            document.documentElement.lang = lang;
+        }
+
+        /**
+         * @function updateToolExamples
+         * @description Updates the example content in the input text areas based on the current language.
+         * This function should be called when language changes or demo is reloaded.
+         * @param {string} toolId - The ID of the tool (e.g., 'json', 'css', 'xml', 'python', 'diff', 'sql').
+         * @param {string} lang - The language code (e.g., 'zh', 'en').
+         */
+        function updateToolExamples(toolId, lang) {
+            const currentTranslations = translations[lang];
+            let inputElement1, inputElement2, exampleKey1, exampleKey2;
+
+            switch (toolId) {
+                case 'json':
+                    inputElement1 = jsonInput;
+                    exampleKey1 = 'jsonInputExample';
+                    break;
+                case 'css':
+                    inputElement1 = cssInput;
+                    exampleKey1 = 'cssInputExample';
+                    break;
+                case 'xml':
+                    inputElement1 = xmlInput;
+                    exampleKey1 = 'xmlInputExample';
+                    break;
+                case 'python':
+                    inputElement1 = pythonInput;
+                    exampleKey1 = 'pythonInputExample';
+                    break;
+                case 'sql':
+                    inputElement1 = sqlInput;
+                    exampleKey1 = 'sqlInputExample';
+                    break;
+                case 'diff':
+                    inputElement1 = diffInput1;
+                    inputElement2 = diffInput2;
+                    exampleKey1 = 'diffInputExample1';
+                    exampleKey2 = 'diffInputExample2';
+                    break;
+                default:
+                    return;
+            }
+
+            if (inputElement1 && currentTranslations[exampleKey1]) {
+                inputElement1.value = currentTranslations[exampleKey1].trim();
+            }
+            if (inputElement2 && currentTranslations[exampleKey2]) {
+                inputElement2.value = currentTranslations[exampleKey2].trim();
+            }
+        }
+
+
+        /**
+         * @function showMessage
+         * @description Displays a message in the global message box with a specific type (success/error).
+         * Uses translation keys.
+         * @param {string} key - The translation key for the message.
+         * @param {string} type - The type of message ('success' or 'error').
+         * @param {string} [extraInfo=''] - Optional extra information to append (e.g., error.message).
+         */
+        function showMessage(key, type, extraInfo = '') {
+            const currentLang = languageSelect.value;
+            let msg = translations[currentLang][key] || key; // Fallback to key if translation not found
+            if (extraInfo) {
+                msg += `: ${extraInfo}`;
+            }
+            messageBox.textContent = msg;
+            messageBox.className = `message ${type}`;
+        }
+
+        /**
+         * @function clearMessage
+         * @description Clears any displayed message from the global message box.
+         */
+        function clearMessage() {
+            messageBox.textContent = '';
+            messageBox.className = 'message'; // Reset class
+        }
+
+        /**
+         * @function clearInputAndOutput
+         * @description Clears the content of given input and output text areas, and global message.
+         * @param {HTMLTextAreaElement} inputElement - The input textarea element.
+         * @param {HTMLTextAreaElement} [outputElement] - Optional: The output textarea element.
+         * @param {HTMLTextAreaElement} [inputElement2] - Optional: Second input element for diff tool.
+         */
+        function clearInputAndOutput(inputElement, outputElement, inputElement2 = null) {
+            inputElement.value = '';
+            if (outputElement) {
+                outputElement.value = '';
+            }
+            if (inputElement2) {
+                inputElement2.value = '';
+            }
+            clearMessage();
+        }
+
+        // --- Navigation Logic ---
+        const navLinks = document.querySelectorAll('.nav-link');
+        const toolSections = document.querySelectorAll('.tool-section');
+
+        /**
+         * @function showTool
+         * @description Activates the specified tool section and updates navigation link styles.
+         * @param {string} toolId - The ID of the tool section to activate (e.g., 'json', 'css', 'xml', 'python', 'diff', 'sql').
+         */
+        function showTool(toolId) {
+            clearMessage(); // Clear message when switching tools
+
+            // Deactivate all nav links and hide all sections
+            navLinks.forEach(link => link.classList.remove('active'));
+            toolSections.forEach(section => section.classList.remove('active'));
+
+            // Activate the selected nav link and show its corresponding section
+            const selectedLink = document.querySelector(`.nav-link[data-tool="${toolId}"]`);
+            const selectedSection = document.getElementById(`${toolId}-tool-section`);
+
+            if (selectedLink && selectedSection) {
+                selectedLink.classList.add('active');
+                selectedSection.classList.add('active');
+            }
+        }
+
+        // Add event listeners to navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                const toolId = event.target.dataset.tool;
+                showTool(toolId);
+            });
+        });
+
+        // --- JSON Tool Logic ---
+        const jsonInput = document.getElementById('jsonInput');
+        const jsonOutput = document.getElementById('jsonOutput');
+        const jsonFormatBtn = document.getElementById('jsonFormatBtn');
+        const jsonCompressBtn = document.getElementById('jsonCompressBtn');
+        const jsonValidateBtn = document = document.getElementById('jsonValidateBtn');
+        const jsonClearBtn = document.getElementById('jsonClearBtn');
+        const jsonReloadDemoBtn = document.getElementById('jsonReloadDemoBtn');
+        const jsonToXmlBtn = document.getElementById('jsonToXmlBtn');
+        const jsonEscapeBtn = document.getElementById('jsonEscapeBtn');
+        const jsonUnescapeBtn = document.getElementById('jsonUnescapeBtn');
+        const jsonIndentSpacesInput = document.getElementById('jsonIndentSpaces');
+
+        /**
+         * @function formatJson
+         * @description Formats the JSON string from the input area and displays it.
+         */
+        function formatJson() {
+            clearMessage();
+            const input = jsonInput.value.trim();
+            if (!input) {
+                showMessage('jsonInputRequired', 'error');
+                return;
+            }
+            try {
+                const parsedJson = JSON.parse(input);
+                const spaces = parseInt(jsonIndentSpacesInput.value, 10);
+                const indent = isNaN(spaces) ? 2 : spaces;
+                jsonOutput.value = JSON.stringify(parsedJson, null, indent);
+                showMessage('jsonFormatSuccess', 'success');
+            } catch (error) {
+                jsonOutput.value = '';
+                showMessage('jsonParseError', 'error', error.message);
+            }
+        }
+
+        /**
+         * @function compressJson
+         * @description Compresses the JSON string from the input area.
+         */
+        function compressJson() {
+            clearMessage();
+            const input = jsonInput.value.trim();
+            if (!input) {
+                showMessage('jsonInputRequired', 'error');
+                return;
+            }
+            try {
+                const parsedJson = JSON.parse(input);
+                jsonOutput.value = JSON.stringify(parsedJson);
+                showMessage('jsonCompressSuccess', 'success');
+            } catch (error) {
+                jsonOutput.value = '';
+                showMessage('jsonParseError', 'error', error.message);
+            }
+        }
+
+        /**
+         * @function validateJson
+         * @description Validates the JSON string in the input area.
+         */
+        function validateJson() {
+            clearMessage();
+            const input = jsonInput.value.trim();
+            if (!input) {
+                showMessage('jsonInputRequired', 'error');
+                return;
+            }
+            try {
+                JSON.parse(input);
+                showMessage('jsonValid', 'success');
+                jsonOutput.value = '';
+            } catch (error) {
+                showMessage('jsonInvalid', 'error', error.message);
+                jsonOutput.value = '';
+            }
+        }
+
+        // JSON button event listeners
+        jsonFormatBtn.addEventListener('click', formatJson);
+        jsonCompressBtn.addEventListener('click', compressJson);
+        jsonValidateBtn.addEventListener('click', validateJson);
+        jsonClearBtn.addEventListener('click', () => clearInputAndOutput(jsonInput, jsonOutput));
+        jsonReloadDemoBtn.addEventListener('click', () => {
+            clearInputAndOutput(jsonInput, jsonOutput);
+            updateToolExamples('json', languageSelect.value);
+            formatJson(); // Auto-format the reloaded example
+            showMessage('demoReloadSuccess', 'success');
+        });
+
+
+        // --- JSON to XML Conversion Logic ---
+        /**
+         * @function jsonToXml
+         * @description Converts a JSON object to an XML string.
+         * Handles attributes (prefixed with '_attributes') and text content ('#text').
+         * @param {object} json - The JSON object to convert.
+         * @param {string} rootName - The name of the root XML element.
+         * @returns {string} The converted XML string.
+         */
+        function jsonToXml(json, rootName = 'root') {
+            let xmlString = '';
+
+            if (typeof json === 'object' && json !== null) {
+                if (Array.isArray(json)) {
+                    // For arrays, create multiple elements with the same rootName
+                    json.forEach(item => {
+                        xmlString += jsonToXml(item, rootName);
+                    });
+                } else {
+                    // For objects, create an element with rootName
+                    let attributes = '';
+                    let content = '';
+                    let hasTextContent = false;
+
+                    for (const key in json) {
+                        if (json.hasOwnProperty(key)) {
+                            if (key === '_attributes' && typeof json[key] === 'object') {
+                                // Process attributes
+                                for (const attrKey in json[key]) {
+                                    if (json[key].hasOwnProperty(attrKey)) {
+                                        attributes += ` ${attrKey}="${json[key][attrKey]}"`;
+                                    }
+                                }
+                            } else if (key === '#text') {
+                                // Process text content
+                                content += json[key];
+                                hasTextContent = true;
+                            } else {
+                                // Process nested elements (recursive call)
+                                content += jsonToXml(json[key], key);
+                            }
+                        }
+                    }
+
+                    // If it's a self-closing tag (no content, no explicit text)
+                    if (content === '' && !hasTextContent) {
+                        xmlString += `<${rootName}${attributes}/>`;
+                    } else {
+                        xmlString += `<${rootName}${attributes}>${content}</${rootName}>`;
+                    }
+                }
+            } else {
+                // Primitive values become text content
+                xmlString += json;
+            }
+
+            return xmlString;
+        }
+
+        /**
+         * @function convertJsonToXml
+         * @description Main function to trigger JSON to XML conversion from input.
+         */
+        function convertJsonToXmlHandler() {
+            clearMessage();
+            const input = jsonInput.value.trim();
+            if (!input) {
+                showMessage('jsonInputRequired', 'error');
+                return;
+            }
+
+            try {
+                const parsedJson = JSON.parse(input);
+                // Determine a sensible root name. If the parsed JSON is a single object,
+                // we can use 'root' or infer from a common top-level key.
+                // For simplicity, let's use 'root' for now.
+                // Or if there's a key like 'data', use that.
+                let rootElementName = 'root';
+                if (typeof parsedJson === 'object' && !Array.isArray(parsedJson)) {
+                    const keys = Object.keys(parsedJson);
+                    if (keys.length === 1 && typeof parsedJson[keys[0]] === 'object' && !Array.isArray(parsedJson[keys[0]])) {
+                        // If it's an object with a single object child, use the child's key as root
+                        rootElementName = keys[0];
+                        jsonOutput.value = formatXmlString(jsonToXml(parsedJson[keys[0]], rootElementName));
+                    } else {
+                        jsonOutput.value = formatXmlString(jsonToXml(parsedJson, rootElementName));
+                    }
+                } else if (Array.isArray(parsedJson)) {
+                    // For arrays, wrap them under a generic root for XML
+                    jsonOutput.value = formatXmlString(jsonToXml(parsedJson, 'item')); // Each array item will be an 'item' tag
+                } else {
+                    // For primitives, wrap in a root
+                    jsonOutput.value = formatXmlString(jsonToXml(parsedJson, rootElementName));
+                }
+
+                showMessage('jsonToXmlSuccess', 'success');
+            } catch (error) {
+                jsonOutput.value = '';
+                showMessage('jsonToXmlError', 'error', error.message);
+            }
+        }
+
+        // Helper to format XML output (re-uses existing formatXml logic slightly modified)
+        function formatXmlString(xmlString) {
+            const indentSize = parseInt(xmlIndentSpacesInput.value, 10); // Use XML tool's indent setting
+            const indentStr = ' '.repeat(isNaN(indentSize) ? 2 : indentSize);
+
+            let formatted = '';
+            let pad = 0;
+            xmlString = xmlString.replace(/(\s*)(<[^>]+>)/g, '\n$2') // Newline before tags (and capture leading whitespace)
+                .replace(/(?<=>)(?:\s*)(?=<)/g, ''); // Remove whitespace between tags
+
+            xmlString.split('\n').forEach(node => {
+                if (!node.trim()) return; // Skip empty lines
+
+                let indentChange = 0;
+                // Check if node is a closing tag, but not self-closing
+                if (node.trim().match(/^<\/\w/) && !node.trim().match(/<(\w+)\s*\/>/)) {
+                    indentChange = -1;
+                }
+                // Check if node is an opening tag (not closing, not self-closing)
+                else if (node.trim().match(/^<\w[^>]*[^\/]>.*$/)) {
+                    indentChange = 1;
+                }
+
+                // Adjust padding level based on current node type
+                // If it's a closing tag, decrease indent BEFORE adding it
+                if (indentChange === -1 && pad > 0) {
+                    pad--;
+                }
+
+                let currentIndent = indentStr.repeat(pad);
+                formatted += currentIndent + node.trim() + '\n';
+
+                // If it's an opening tag, increase indent AFTER adding it
+                if (indentChange === 1) {
+                    pad++;
+                }
+            });
+            return formatted.trim();
+        }
+
+        // Add event listener for JSON to XML button
+        jsonToXmlBtn.addEventListener('click', convertJsonToXmlHandler);
+
+        // --- JSON Escape and Unescape Logic ---
+
+        /**
+         * @function escapeJsonString
+         * @description Escapes a raw string to be safely embedded within a JSON string value.
+         */
+        function escapeJsonString() {
+            clearMessage();
+            const input = jsonInput.value; // Don't trim, preserve leading/trailing spaces for escape
+            if (!input) {
+                showMessage('jsonInputRequired', 'error');
+                return;
+            }
+            try {
+                // Use JSON.stringify to escape the string, then remove the outer quotes
+                jsonOutput.value = JSON.stringify(input).slice(1, -1);
+                showMessage('jsonEscapeSuccess', 'success');
+            } catch (error) {
+                jsonOutput.value = '';
+                showMessage('jsonEscapeError', 'error', error.message);
+            }
+        }
+
+        /**
+         * @function unescapeJsonString
+         * @description Unescapes an escaped JSON string back to a raw string.
+         */
+        function unescapeJsonString() {
+            clearMessage();
+            const input = jsonInput.value.trim(); // Trim for parsing consistency
+            if (!input) {
+                showMessage('jsonInputRequired', 'error');
+                return;
+            }
+            try {
+                // Wrap input in quotes to make it a valid JSON string literal, then parse
+                jsonOutput.value = JSON.parse(`"${input}"`);
+                showMessage('jsonUnescapeSuccess', 'success');
+            } catch (error) {
+                jsonOutput.value = '';
+                showMessage('jsonUnescapeError', 'error', error.message);
+            }
+        }
+
+        // Add event listeners for JSON escape/unescape buttons
+        jsonEscapeBtn.addEventListener('click', escapeJsonString);
+        jsonUnescapeBtn.addEventListener('click', unescapeJsonString);
+
+
+        // --- CSS Tool Logic ---
+        const cssInput = document.getElementById('cssInput');
+        const cssOutput = document.getElementById('cssOutput');
+        const cssFormatBtn = document.getElementById('cssFormatBtn');
+        const cssCompressBtn = document.getElementById('cssCompressBtn');
+        const cssClearBtn = document.getElementById('cssClearBtn');
+        const cssReloadDemoBtn = document.getElementById('cssReloadDemoBtn');
+        const cssIndentSpacesInput = document.getElementById('cssIndentSpaces');
+
+        /**
+         * @function formatCss
+         * @description Formats the CSS string from the input area.
+         */
+        function formatCss() {
+            clearMessage();
+            let input = cssInput.value.trim();
+            if (!input) {
+                showMessage('cssInputRequired', 'error');
+                return;
+            }
+
+            const indentSize = parseInt(cssIndentSpacesInput.value, 10);
+            const indentStr = ' '.repeat(isNaN(indentSize) ? 2 : indentSize);
+
+            try {
+                // Remove comments
+                input = input.replace(/\/\*[\s\S]*?\*\//g, '');
+                // Add newlines after closing brace, opening brace, and semicolons
+                input = input.replace(/;\s*/g, ';\n')
+                    .replace(/{\s*/g, ' {\n')
+                    .replace(/}\s*/g, '}\n\n');
+
+                let formatted = '';
+                let level = 0;
+                input.split('\n').forEach(line => {
+                    line = line.trim();
+                    if (!line) return;
+
+                    if (line.endsWith('}')) {
+                        level--;
+                    }
+                    let currentIndent = indentStr.repeat(Math.max(0, level));
+                    formatted += currentIndent + line + '\n';
+                    if (line.endsWith('{')) {
+                        level++;
+                    }
+                });
+                cssOutput.value = formatted.trim();
+                showMessage('cssFormatSuccess', 'success');
+            } catch (error) {
+                cssOutput.value = '';
+                showMessage('cssFormatError', 'error', error.message);
+            }
+        }
+
+        /**
+         * @function compressCss
+         * @description Compresses the CSS string from the input area.
+         */
+        function compressCss() {
+            clearMessage();
+            let input = cssInput.value.trim();
+            if (!input) {
+                showMessage('cssInputRequired', 'error');
+                return;
+            }
+
+            try {
+                // Remove comments
+                input = input.replace(/\/\*[\s\S]*?\*\//g, '');
+                // Remove newlines, tabs, and multiple spaces
+                input = input.replace(/[\n\t\r]/g, ' ');
+                input = input.replace(/\s{2,}/g, ' ');
+                // Remove space before and after specific characters
+                input = input.replace(/\s*([,:;{}])\s*/g, '$1');
+                // Add space after comma for readability, but not strictly necessary for compression
+                input = input.replace(/;}/g, '}'); // Remove semicolon before closing brace
+                input = input.replace(/{/g, '{'); // Ensure no space before opening brace
+                input = input.replace(/}/g, '}'); // Ensure no space after closing brace
+
+                cssOutput.value = input.trim();
+                showMessage('cssCompressSuccess', 'success');
+            } catch (error) {
+                cssOutput.value = '';
+                showMessage('cssCompressError', 'error', error.message);
+            }
+        }
+
+        // CSS button event listeners
+        cssFormatBtn.addEventListener('click', formatCss);
+        cssCompressBtn.addEventListener('click', compressCss);
+        cssClearBtn.addEventListener('click', () => clearInputAndOutput(cssInput, cssOutput));
+        cssReloadDemoBtn.addEventListener('click', () => {
+            clearInputAndOutput(cssInput, cssOutput);
+            updateToolExamples('css', languageSelect.value);
+            formatCss(); // Auto-format the reloaded example
+            showMessage('demoReloadSuccess', 'success');
+        });
+
+        // --- XML Tool Logic ---
+        const xmlInput = document.getElementById('xmlInput');
+        const xmlOutput = document.getElementById('xmlOutput');
+        const xmlFormatBtn = document.getElementById('xmlFormatBtn');
+        const xmlCompressBtn = document.getElementById('xmlCompressBtn');
+        const xmlClearBtn = document.getElementById('xmlClearBtn');
+        const xmlReloadDemoBtn = document.getElementById('xmlReloadDemoBtn');
+        const xmlToJsonBtn = document.getElementById('xmlToJsonBtn');
+        const xmlIndentSpacesInput = document.getElementById('xmlIndentSpaces');
+
+        /**
+         * @function formatXml
+         * @description Formats the XML string from the input area.
+         * Basic formatting: adds newlines after tags and indents based on nesting level.
+         * Does not handle mixed content or preserve all whitespace inside text nodes perfectly.
+         */
+        function formatXml() {
+            clearMessage();
+            let input = xmlInput.value.trim();
+            if (!input) {
+                showMessage('xmlInputRequired', 'error');
+                return;
+            }
+
+            const indentSize = parseInt(xmlIndentSpacesInput.value, 10);
+            const indentStr = ' '.repeat(isNaN(indentSize) ? 2 : indentSize);
+
+            try {
+                // Basic validation using DOMParser
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(input, "application/xml");
+                const errorNode = xmlDoc.querySelector("parsererror");
+                if (errorNode) {
+                    throw new Error(errorNode.textContent);
+                }
+
+                // Simple regex-based pretty printing for XML
+                let formatted = '';
+                let pad = 0;
+                // Add newlines after tags, handle self-closing tags and comments
+                input = input.replace(/(\s*)(<[^>]+>)/g, '\n$2') // Newline before tags (and capture leading whitespace)
+                    .replace(/(?<=>)(?:\s*)(?=<)/g, ''); // Remove whitespace between tags
+
+                input.split('\n').forEach(node => {
+                    if (!node.trim()) return; // Skip empty lines
+
+                    let indentChange = 0;
+                    // Check if node is a closing tag, but not self-closing
+                    if (node.trim().match(/^<\/\w/) && !node.trim().match(/<(\w+)\s*\/>/)) {
+                        indentChange = -1;
+                    }
+                    // Check if node is an opening tag (not closing, not self-closing)
+                    else if (node.trim().match(/^<\w[^>]*[^\/]>.*$/)) {
+                        indentChange = 1;
+                    }
+
+                    // Adjust padding level based on current node type
+                    // If it's a closing tag, decrease indent BEFORE adding it
+                    if (indentChange === -1 && pad > 0) {
+                        pad--;
+                    }
+
+                    let currentIndent = indentStr.repeat(pad);
+                    formatted += currentIndent + node.trim() + '\n';
+
+                    // If it's an opening tag, increase indent AFTER adding it
+                    if (indentChange === 1) {
+                        pad++;
+                    }
+                });
+
+                xmlOutput.value = formatted.trim();
+                showMessage('xmlFormatSuccess', 'success');
+            } catch (error) {
+                xmlOutput.value = '';
+                showMessage('xmlParseOrFormatError', 'error', error.message);
+            }
+        }
+
+
+        /**
+         * @function compressXml
+         * @description Compresses the XML string from the input area.
+         */
+        function compressXml() {
+            clearMessage();
+            let input = xmlInput.value.trim();
+            if (!input) {
+                showMessage('xmlInputRequired', 'error');
+                return;
+            }
+
+            try {
+                // Basic validation using DOMParser
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(input, "application/xml");
+                const errorNode = xmlDoc.querySelector("parsererror");
+                if (errorNode) {
+                    throw new Error(errorNode.textContent);
+                }
+
+                // Remove comments
+                input = input.replace(/<!--[\s\S]*?-->/g, '');
+                // Remove newlines, tabs, and multiple spaces
+                input = input.replace(/[\n\t\r]/g, '');
+                input = input.replace(/\s{2,}/g, '');
+                // Remove whitespace between tags
+                input = input.replace(/>\s*</g, '><');
+                // Remove leading/trailing whitespace from text nodes (very basic, can be more complex)
+                input = input.replace(/>\s*([^<>\s]+)\s*</g, '>$1<');
+
+                xmlOutput.value = input.trim();
+                showMessage('xmlCompressSuccess', 'success');
+            } catch (error) {
+                xmlOutput.value = '';
+                showMessage('xmlParseOrCompressError', 'error', error.message);
+            }
+        }
+
+        // XML button event listeners
+        xmlFormatBtn.addEventListener('click', formatXml);
+        xmlCompressBtn.addEventListener('click', compressXml);
+        xmlClearBtn.addEventListener('click', () => clearInputAndOutput(xmlInput, xmlOutput));
+        xmlReloadDemoBtn.addEventListener('click', () => {
+            clearInputAndOutput(xmlInput, xmlOutput);
+            updateToolExamples('xml', languageSelect.value);
+            formatXml(); // Auto-format the reloaded example
+            showMessage('demoReloadSuccess', 'success');
+        });
+
+        // --- XML to JSON Conversion Logic ---
+        /**
+         * @function xmlToJson
+         * @description Converts an XML DOM node to a JSON object.
+         * Handles attributes (prefixed with '_attributes') and text content ('#text').
+         * @param {Node} xmlNode - The XML DOM node to convert.
+         * @returns {object|string} The converted JSON object or text content.
+         */
+        function xmlToJson(xmlNode) {
+            // Create the return object
+            let obj = {};
+
+            if (xmlNode.nodeType == 1) { // element
+                // do attributes
+                if (xmlNode.attributes.length > 0) {
+                    obj["_attributes"] = {};
+                    for (let j = 0; j < xmlNode.attributes.length; j++) {
+                        let attribute = xmlNode.attributes.item(j);
+                        obj["_attributes"][attribute.nodeName] = attribute.nodeValue;
+                    }
+                }
+            } else if (xmlNode.nodeType == 3) { // text node
+                return xmlNode.nodeValue.trim();
+            } else if (xmlNode.nodeType == 8) { // comment node
+                return null; // Ignore comments in JSON conversion
+            }
+
+            // do children
+            if (xmlNode.hasChildNodes()) {
+                for (let i = 0; i < xmlNode.childNodes.length; i++) {
+                    let item = xmlNode.childNodes.item(i);
+                    let nodeName = item.nodeName;
+
+                    if (item.nodeType === 3) { // Text node
+                        let text = item.nodeValue.trim();
+                        if (text !== '') {
+                            obj["#text"] = (obj["#text"] ? obj["#text"] + text : text);
+                        }
+                    } else if (item.nodeType === 1) { // Element node
+                        if (typeof obj[nodeName] == "undefined") {
+                            obj[nodeName] = xmlToJson(item);
+                        } else {
+                            if (typeof obj[nodeName].push == "undefined") {
+                                let old = obj[nodeName];
+                                obj[nodeName] = [];
+                                obj[nodeName].push(old);
+                            }
+                            obj[nodeName].push(xmlToJson(item));
+                        }
+                    }
+                }
+            }
+            return obj;
+        }
+
+        /**
+         * @function convertXmlToJson
+         * @description Main function to trigger XML to JSON conversion from input.
+         */
+        function convertXmlToJsonHandler() {
+            clearMessage();
+            const input = xmlInput.value.trim();
+            if (!input) {
+                showMessage('xmlInputRequired', 'error');
+                return;
+            }
+
+            try {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(input, "application/xml");
+                const errorNode = xmlDoc.querySelector("parsererror");
+                if (errorNode) {
+                    throw new Error(errorNode.textContent);
+                }
+
+                // If XML is valid, convert to JSON
+                const jsonResult = xmlToJson(xmlDoc.documentElement);
+                // Pretty print the JSON output
+                xmlOutput.value = JSON.stringify(jsonResult, null, 2);
+                showMessage('xmlToJsonSuccess', 'success');
+            } catch (error) {
+                xmlOutput.value = '';
+                showMessage('xmlToJsonError', 'error', error.message);
+            }
+        }
+
+        // Add event listener for XML to JSON button
+        xmlToJsonBtn.addEventListener('click', convertXmlToJsonHandler);
+
+
+        // --- Python Tool Logic ---
+        const pythonInput = document.getElementById('pythonInput');
+        const pythonOutput = document.getElementById('pythonOutput');
+        const pythonFormatBtn = document.getElementById('pythonFormatBtn');
+        const pythonClearBtn = document.getElementById('pythonClearBtn');
+        const pythonReloadDemoBtn = document.getElementById('pythonReloadDemoBtn');
+        const pythonIndentSpacesInput = document.getElementById('pythonIndentSpaces');
+
+        /**
+         * @function formatPython
+         * @description Formats the Python string from the input area.
+         * This is a basic formatter and will not handle all edge cases or complex Python syntax
+         * as robustly as a dedicated Python formatter (e.g., Black).
+         */
+        function formatPython() {
+            clearMessage();
+            let input = pythonInput.value; // Don't trim, preserve leading/trailing newlines
+            if (!input) {
+                showMessage('pythonInputRequired', 'error');
+                return;
+            }
+
+            const indentSize = parseInt(pythonIndentSpacesInput.value, 10);
+            const indentStr = ' '.repeat(isNaN(indentSize) ? 4 : indentSize); // Python usually uses 4 spaces
+
+            let formattedLines = [];
+            let currentIndentLevel = 0;
+            const lines = input.split('\n');
+
+            try {
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i].trim();
+                    let nextLine = lines[i + 1] ? lines[i + 1].trim() : '';
+
+                    if (line === '') {
+                        // Skip multiple consecutive empty lines, keep only one
+                        if (formattedLines.length > 0 && formattedLines[formattedLines.length - 1] === '') {
+                            continue;
+                        }
+                        formattedLines.push('');
+                        continue;
+                    }
+
+                    // Adjust indent level for lines that should dedent (e.g., 'else:', 'elif:', 'except:', 'finally:')
+                    // Also simple heuristic for 'return', 'break', 'continue' at beginning of line.
+                    // This is very basic and might not cover all cases correctly.
+                    const dedentKeywords = ['else:', 'elif:', 'except:', 'finally:', 'return ', 'break', 'continue', 'pass'];
+                    const mightDedent = dedentKeywords.some(keyword => line.startsWith(keyword));
+
+                    if (mightDedent) {
+                        currentIndentLevel = Math.max(0, currentIndentLevel - 1);
+                    }
+
+                    formattedLines.push(indentStr.repeat(currentIndentLevel) + line);
+
+                    // Adjust indent level for the next line based on current line
+                    // Increase indent for lines ending with a colon (start of a new block)
+                    if (line.endsWith(':') && !line.startsWith('#')) { // Ignore comments ending with colon
+                        currentIndentLevel++;
+                    }
+                    // Simple heuristic to dedent after a block ends (e.g. after a function/class body)
+                    // This is notoriously hard without full AST parsing.
+                    // For now, only dedent if the next line is empty and current line is not
+                    // a block starter, or if it's a dedent keyword.
+                    // More robust: detect if next logical line is at a lower indentation level.
+                    // Let's refine this to be *only* based on block starters for simplicity.
+                    // The `mightDedent` handles `else`, etc.
+                }
+
+                // Remove excessive empty lines at the end
+                while (formattedLines.length > 0 && formattedLines[formattedLines.length - 1] === '') {
+                    formattedLines.pop();
+                }
+
+                pythonOutput.value = formattedLines.join('\n');
+                showMessage('pythonFormatSuccess', 'success');
+            } catch (error) {
+                pythonOutput.value = '';
+                showMessage('pythonFormatError', 'error', error.message);
+            }
+        }
+
+        // Python button event listeners
+        pythonFormatBtn.addEventListener('click', formatPython);
+        pythonClearBtn.addEventListener('click', () => clearInputAndOutput(pythonInput, pythonOutput));
+        pythonReloadDemoBtn.addEventListener('click', () => {
+            clearInputAndOutput(pythonInput, pythonOutput);
+            updateToolExamples('python', languageSelect.value);
+            formatPython(); // Auto-format the reloaded example
+            showMessage('demoReloadSuccess', 'success');
+        });
+
+
+        // --- SQL Tool Logic ---
+        const sqlInput = document.getElementById('sqlInput');
+        const sqlOutput = document.getElementById('sqlOutput');
+        const sqlFormatBtn = document.getElementById('sqlFormatBtn');
+        const sqlCompressBtn = document.getElementById('sqlCompressBtn');
+        const sqlClearBtn = document.getElementById('sqlClearBtn');
+        const sqlReloadDemoBtn = document.getElementById('sqlReloadDemoBtn');
+        const sqlIndentSpacesInput = document.getElementById('sqlIndentSpaces');
+
+        // Keywords for SQL formatting
+        const sqlKeywords = [
+            'SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'JOIN', 'INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL JOIN',
+            'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'UNION', 'UNION ALL', 'INSERT INTO', 'VALUES',
+            'UPDATE', 'SET', 'DELETE FROM', 'CREATE TABLE', 'ALTER TABLE', 'DROP TABLE', 'AS', 'ON', 'BY', 'IN',
+            'NOT IN', 'LIKE', 'ILIKE', 'BETWEEN', 'IS NULL', 'IS NOT NULL', 'COUNT', 'SUM', 'AVG', 'MIN', 'MAX'
+        ];
+
+        /**
+         * @function formatSql
+         * @description Formats the SQL string from the input area.
+         */
+        function formatSql() {
+            clearMessage();
+            let input = sqlInput.value;
+            if (!input) {
+                showMessage('sqlInputRequired', 'error');
+                return;
+            }
+
+            const indentSize = parseInt(sqlIndentSpacesInput.value, 10);
+            const indentStr = ' '.repeat(isNaN(indentSize) ? 4 : indentSize); // Default 4 spaces for SQL
+
+            try {
+                // Convert to uppercase for keywords (optional, can be removed)
+                input = input.replace(/\b(select|from|where|and|or|join|inner join|left join|right join|full join|group by|order by|having|limit|offset|union|union all|insert into|values|update|set|delete from|create table|alter table|drop table|as|on|by|in|not in|like|ilike|between|is null|is not null|count|sum|avg|min|max)\b/gi, (match) => match.toUpperCase());
+
+                // Remove comments
+                input = input.replace(/--.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
+
+                // Normalize whitespace
+                input = input.replace(/\s+/g, ' ').trim();
+
+                let formatted = '';
+                let currentIndentLevel = 0;
+                let lines = input.split(/(SELECT|FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT|OFFSET|UNION|INSERT INTO|UPDATE|DELETE FROM|CREATE TABLE|ALTER TABLE|DROP TABLE|JOIN|ON)\s+/g);
+
+                // Add newlines before major keywords and indent them
+                const keywordsToNewlineAndIndent = ['SELECT', 'FROM', 'WHERE', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'UNION', 'INSERT INTO', 'UPDATE', 'DELETE FROM', 'CREATE TABLE', 'ALTER TABLE', 'DROP TABLE'];
+                const joinKeywords = ['JOIN', 'INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL JOIN', 'ON'];
+
+                let tempFormatted = '';
+                lines.forEach((part, index) => {
+                    if (index % 2 === 0) { // This is the content part
+                        tempFormatted += part;
+                    } else { // This is the keyword part (captured by regex)
+                        tempFormatted += '\n' + part; // Add newline before the keyword
+                    }
+                });
+                lines = tempFormatted.split('\n').filter(line => line.trim() !== '');
+
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i].trim();
+                    if (!line) continue;
+
+                    // Handle parentheses for indentation, very basic
+                    let openParens = (line.match(/\(/g) || []).length;
+                    let closeParens = (line.match(/\)/g) || []).length;
+
+                    // Deduct indent level for closing parens before adding the line
+                    if (closeParens > openParens) { // If there are more closing than opening, it's a dedent
+                        currentIndentLevel = Math.max(0, currentIndentLevel - (closeParens - openParens));
+                    }
+
+
+                    // Check if current line starts with a dedent keyword
+                    let dedentDetected = false;
+                    for (const keyword of keywordsToNewlineAndIndent) {
+                        if (line.startsWith(keyword) && keyword !== 'SELECT') { // SELECT often starts at level 0, so don't dedent from it
+                            // Try to dedent if it's a new clause that should align with parent query
+                            // This is a very rough heuristic
+                            if (currentIndentLevel > 0 && !line.match(/^\s*(SELECT|FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT|OFFSET)\b/)) {
+                                // currentIndentLevel--; // Disabled for now, as it might dedent too much
+                            }
+                        }
+                    }
+
+                    formatted += indentStr.repeat(currentIndentLevel) + line + '\n';
+
+                    // Add indent for opening parens
+                    if (openParens > closeParens) {
+                        currentIndentLevel += (openParens - closeParens);
+                    }
+
+                    // Add indent after specific keywords, particularly for columns after SELECT
+                    if (line.startsWith('SELECT') && line.includes(',')) {
+                        // For SELECT clauses, align subsequent columns
+                        currentIndentLevel++;
+                    } else if (line.endsWith(',') && !line.includes('(') && !line.includes(')')) {
+                        // After a comma, new line usually needs to align
+                        // If it's a multi-column list, might need to maintain currentIndentLevel
+                    } else if (line.match(/\b(FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT|OFFSET)\b/i)) {
+                        // Align after these keywords, but not increase indent level for sub-clauses
+                    }
+                    // More complex rules needed for accurate formatting. This is a very basic attempt.
+                }
+
+                // Final cleanup for newlines
+                formatted = formatted.replace(/\n\s*\n/g, '\n\n').trim(); // Reduce multiple empty lines
+
+
+                sqlOutput.value = formatted;
+                showMessage('sqlFormatSuccess', 'success');
+            } catch (error) {
+                sqlOutput.value = '';
+                showMessage('sqlFormatError', 'error', error.message);
+            }
+        }
+
+        /**
+         * @function compressSql
+         * @description Compresses the SQL string from the input area.
+         */
+        function compressSql() {
+            clearMessage();
+            let input = sqlInput.value;
+            if (!input) {
+                showMessage('sqlInputRequired', 'error');
+                return;
+            }
+
+            try {
+                // Remove single-line comments (-- comment)
+                input = input.replace(/--.*?(\n|$)/g, '');
+                // Remove multi-line comments (/* comment */)
+                input = input.replace(/\/\*[\s\S]*?\*\//g, '');
+                // Replace all whitespace sequences (including newlines and tabs) with a single space
+                input = input.replace(/\s+/g, ' ');
+                // Remove spaces before/after parentheses and commas, and before semicolons
+                input = input.replace(/\s*([,;()=<>!+-\/\*])\s*/g, '$1');
+                // Ensure space after commas if followed by non-whitespace
+                input = input.replace(/,(\S)/g, ', $1');
+                // Remove space before closing parenthesis and after opening parenthesis
+                input = input.replace(/\(\s*/g, '(').replace(/\s*\)/g, ')');
+
+
+                sqlOutput.value = input.trim();
+                showMessage('sqlCompressSuccess', 'success');
+            } catch (error) {
+                sqlOutput.value = '';
+                showMessage('sqlCompressError', 'error', error.message);
+            }
+        }
+
+        // SQL button event listeners
+        sqlFormatBtn.addEventListener('click', formatSql);
+        sqlCompressBtn.addEventListener('click', compressSql);
+        sqlClearBtn.addEventListener('click', () => clearInputAndOutput(sqlInput, sqlOutput));
+        sqlReloadDemoBtn.addEventListener('click', () => {
+            clearInputAndOutput(sqlInput, sqlOutput);
+            updateToolExamples('sql', languageSelect.value);
+            formatSql(); // Auto-format the reloaded example
+            showMessage('demoReloadSuccess', 'success');
+        });
+
+
+        // --- Code Compare Tool Logic ---
+        const diffInput1 = document.getElementById('diffInput1');
+        const diffInput2 = document.getElementById('diffInput2');
+        const diffOutput = document.getElementById('diffOutput');
+        const diffCompareBtn = document.getElementById('diffCompareBtn');
+        const diffClearBtn = document.getElementById('diffClearBtn');
+        const diffReloadDemoBtn = document.getElementById('diffReloadDemoBtn');
+
+        /**
+         * @function compareCode
+         * @description Compares two code snippets line by line and outputs a diff-like result.
+         * Adds prefixes: '+' for added lines, '-' for removed lines, ' ' for unchanged lines.
+         */
+        function compareCode() {
+            clearMessage();
+            const lines1 = diffInput1.value.split('\n');
+            const lines2 = diffInput2.value.split('\n');
+
+            if (!lines1.some(line => line.trim() !== '') && !lines2.some(line => line.trim() !== '')) {
+                showMessage('diffInputRequired', 'error');
+                return;
+            }
+
+            let diffResult = [];
+            let i = 0, j = 0;
+
+            // Simple line-by-line comparison
+            while (i < lines1.length || j < lines2.length) {
+                const line1 = lines1[i] !== undefined ? lines1[i] : null;
+                const line2 = lines2[j] !== undefined ? lines2[j] : null;
+
+                if (line1 === line2) {
+                    if (line1 !== null) diffResult.push('  ' + line1);
+                    i++;
+                    j++;
+                } else {
+                    let foundMatch = false;
+
+                    // Look ahead for a match in line2 for line1
+                    for (let k = j; k < lines2.length; k++) {
+                        if (line1 === lines2[k]) {
+                            // Lines in line2 were added
+                            for (let l = j; l < k; l++) {
+                                diffResult.push('+ ' + lines2[l]);
+                            }
+                            diffResult.push('  ' + line1); // Add the matched line
+                            i++;
+                            j = k + 1;
+                            foundMatch = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundMatch && line1 !== null) {
+                        // Line1 is unique or no immediate match found
+                        diffResult.push('- ' + line1);
+                        i++;
+                    }
+
+                    if (!foundMatch && line2 !== null && !lines1.includes(line2)) { // Only add if it's genuinely new
+                        diffResult.push('+ ' + line2);
+                        j++;
+                    } else if (!foundMatch && line2 !== null) { // If line2 exists and might be a match but was already processed
+                        // Advance j if line2 was part of a match or simply a duplicate that was already handled by i
+                        j++;
+                    }
+                }
+            }
+
+            // A more robust but complex diff algorithm (like Myers' algorithm) is needed for true character-level or block-level diffs.
+            // This implementation is a basic line-by-line comparison.
+
+            diffOutput.value = diffResult.join('\n');
+            showMessage('diffCompareSuccess', 'success');
+        }
+
+        // Diff button event listeners
+        diffCompareBtn.addEventListener('click', compareCode);
+        diffClearBtn.addEventListener('click', () => clearInputAndOutput(diffInput1, diffOutput, diffInput2));
+        diffReloadDemoBtn.addEventListener('click', () => {
+            clearInputAndOutput(diffInput1, diffOutput, diffInput2);
+            updateToolExamples('diff', languageSelect.value);
+            compareCode(); // Auto-compare the reloaded examples
+            showMessage('demoReloadSuccess', 'success');
+        });
+
+
+        // --- Initial Load Logic ---
+        window.addEventListener('load', () => {
+            // Set default language
+            languageSelect.value = 'zh'; // Default to Chinese
+            updateLanguage(languageSelect.value);
+
+            // Populate all examples
+            updateToolExamples('json', languageSelect.value);
+            updateToolExamples('css', languageSelect.value);
+            updateToolExamples('xml', languageSelect.value);
+            updateToolExamples('python', languageSelect.value);
+            updateToolExamples('sql', languageSelect.value); // Populate SQL example
+            updateToolExamples('diff', languageSelect.value); // Populate diff examples
+
+            // Format JSON and compare Diff initially to show a pre-filled example/result
+            formatJson(); // Auto-format JSON example on load
+            compareCode(); // Auto-compare diff examples on load
+        });
+
+        // Language change event listener
+        languageSelect.addEventListener('change', (event) => {
+            const newLang = event.target.value;
+            updateLanguage(newLang);
+
+            // Update examples for all tools (only if input is currently empty)
+            updateToolExamples('json', newLang);
+            updateToolExamples('css', newLang);
+            updateToolExamples('xml', newLang);
+            updateToolExamples('python', newLang);
+            updateToolExamples('sql', newLang); // Update SQL example
+            updateToolExamples('diff', newLang);
+
+            // Re-run the primary operation on the current active tool to update output in new language
+            const activeToolId = document.querySelector('.tool-section.active').id.replace('-tool-section', '');
+            if (activeToolId === 'json') {
+                formatJson();
+            } else if (activeToolId === 'css') {
+                formatCss();
+            } else if (activeToolId === 'xml') {
+                formatXml();
+            } else if (activeToolId === 'python') {
+                formatPython();
+            } else if (activeToolId === 'sql') {
+                formatSql();
+            } else if (activeToolId === 'diff') {
+                compareCode();
+            }
+        });
+    </script>
+</body>
+</html>
